@@ -1,25 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState} from 'react'
 
-function App() {
+
+export default function App() {
+  const [tasks, setTasks] = useState([])
+  const [input,setInput] = useState('');
+
+  const takeInput =(event)=>{
+    setInput(event.target.value);
+  }
+
+  const addMyTask = ()=>{
+    setTasks([...tasks,{title:input,isDone:false}]);
+  }
+
+  const changeState = (index)=>{
+      const manipulatedArr = tasks.map(
+        (item,i)=>{
+            if(i===index){
+              return {...item,isDone:true};
+            }
+            return item;
+          })
+
+        setTasks(manipulatedArr)
+  }
+
+
+  const deleteTask = (index)=>{
+
+    const newArray = tasks.filter((_,i)=>{
+      return i!==index;
+    })
+
+    setTasks(newArray);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+    <h1>Todo List</h1>
+    <input onChange={takeInput} type="text" placeholder='Enter your task' />
+    <button onClick={addMyTask}>Add Task</button>
+
+    <ul>
+    {tasks.map((item,index)=>{
+      return <li style={{textDecoration:item.isDone?'line-through':''}} 
+              key={index}>
+              {item.title} 
+              <button onClick={()=>changeState(index)}>done</button>
+              <button onClick={()=>deleteTask(index)}>delete</button>
+              </li>
+    })}
+    </ul>
+    </>
+  )
 }
 
-export default App;
+
+
+
+
+
