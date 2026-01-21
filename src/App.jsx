@@ -1,62 +1,31 @@
-import {useState} from 'react'
 
+import {BrowserRouter,Routes,Route,Link} from 'react-router-dom'
+import Home from './home.jsx';
+import Contact from './contact.jsx';
+import Login from './login.jsx'
+import Dashboard from './dashboard.jsx'
 
 export default function App() {
-  const [tasks, setTasks] = useState([])
-  const [input,setInput] = useState('');
-
-  const takeInput =(event)=>{
-    setInput(event.target.value);
-  }
-
-  const addMyTask = ()=>{
-    setTasks([...tasks,{title:input,isDone:false}]);
-  }
-
-  const changeState = (index)=>{
-      const manipulatedArr = tasks.map(
-        (item,i)=>{
-            if(i===index){
-              return {...item,isDone:true};
-            }
-            return item;
-          })
-
-        setTasks(manipulatedArr)
-  }
-
-
-  const deleteTask = (index)=>{
-
-    const newArray = tasks.filter((_,i)=>{
-      return i!==index;
-    })
-
-    setTasks(newArray);
-  }
-
   return (
     <>
-    <h1>Todo List</h1>
-    <input onChange={takeInput} type="text" placeholder='Enter your task' />
-    <button onClick={addMyTask}>Add Task</button>
+    <BrowserRouter>
 
-    <ul>
-    {tasks.map((item,index)=>{
-      return <li style={{textDecoration:item.isDone?'line-through':''}} 
-              key={index}>
-              {item.title} 
-              <button onClick={()=>changeState(index)}>done</button>
-              <button onClick={()=>deleteTask(index)}>delete</button>
-              </li>
-    })}
-    </ul>
+        <nav>
+        <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/login">Login</Link></li>
+        </ul>
+      </nav>
+
+
+    <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/contact" element={<Contact />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
+    </BrowserRouter>
     </>
   )
 }
-
-
-
-
-
-
